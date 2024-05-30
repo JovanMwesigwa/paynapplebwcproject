@@ -6,6 +6,10 @@ export default function Footer() {
   const { isConnected, isReconnecting, isConnecting, isDisconnected } =
     useAccount();
 
+  if (isReconnecting || isConnecting) {
+    return null;
+  }
+
   if (!isConnected || isDisconnected) {
     return <ConnectWalletPage />;
   }

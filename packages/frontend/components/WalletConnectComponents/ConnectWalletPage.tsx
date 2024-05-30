@@ -5,11 +5,16 @@ import { signIn, signOut } from "next-auth/react";
 import Image from "next/image";
 import React from "react";
 import { useAccount } from "wagmi";
+import LoadingPage from "../Spinners/LoadingPage";
 
 const ConnectWalletPage = () => {
   const { isConnected } = useAccount();
 
-  const { session } = useFetchLookUpAddress();
+  const { session, status } = useFetchLookUpAddress();
+
+  if (status === "loading") {
+    return <LoadingPage />;
+  }
 
   return (
     <div className="flex flex-1 items-center justify-evenly flex-col h-screen">

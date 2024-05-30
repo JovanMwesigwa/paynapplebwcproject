@@ -20,5 +20,8 @@
   "keywords": [
     "celo-composer",
     "celo"
-  ]
+  ],
+  "dependencies": {
+    "lucide-react": "^0.381.0"
+  }
 }

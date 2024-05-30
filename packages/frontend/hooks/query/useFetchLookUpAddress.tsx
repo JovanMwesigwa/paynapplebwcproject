@@ -7,29 +7,38 @@ const useFetchLookUpAddress = () => {
   const { data: session, status } = useSession();
 
   const request = async (identifier: string) => {
-    let response: Response = await fetch(
-      `/api/socialconnect/lookup?${new URLSearchParams({
-        handle: identifier,
-        identifierType: getIdentifierPrefix(),
-      })}`,
-      {
-        method: "GET",
-      }
-    );
+    try {
+      const response = await fetch(
+        `/api/socialconnect/lookup?${new URLSearchParams({
+          handle: identifier,
+          identifierType: getIdentifierPrefix(),
+        })}`,
+        {
+          method: "GET",
+        }
+      );
 
-    let lookupResponse: LookupResponse = await response.json();
-    if (lookupResponse.accounts.length > 0) {
-      return lookupResponse.accounts[0];
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const lookupResponse: LookupResponse = await response.json();
+
+      return lookupResponse.accounts.length > 0
+        ? lookupResponse.accounts[0]
+        : {};
+    } catch (error) {
+      console.error("Failed to fetch lookup address:", error);
+      return {};
     }
   };
 
   const response = useQuery({
+    queryKey: ["lookupAddress", session?.user?.name],
     // @ts-ignore
-    queryKey: ["lookupAddress", session?.username],
-    // @ts-ignore
-    queryFn: () => request(session?.username as string),
-    // @ts-ignore
-    enabled: !!session?.username, // Only run the query if username is defined
+    queryFn: () => request(session.user?.name as string),
+    enabled: !!session?.user?.name, // Only run the query if username is defined
+    staleTime: 5 * 60 * 1000, // Optional: Adjust stale time as needed
   });
 
   return { ...response, session, status };
