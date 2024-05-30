@@ -1,5 +1,6 @@
 import { useSocialConnect } from "@/SocialConnect/useSocialConnect";
 import BackHeader from "@/components/BackHeader";
+import useFetchLookUpAddress from "@/hooks/query/useFetchLookUpAddress";
 import useLookUpAddress from "@/hooks/useLookUpAddress";
 import { Button } from "@headlessui/react";
 import { useSession } from "next-auth/react";
@@ -14,29 +15,19 @@ const RegisterPage = () => {
 
   const [ActionError, setActionError] = React.useState<string | null>("");
 
+  const {
+    data: odisRegistedAddresses,
+    isLoading,
+    error,
+    session,
+    status,
+  } = useFetchLookUpAddress();
+
   const router = useRouter();
 
-  const { data: session, status } = useSession();
   const { address } = useAccount();
 
-  const {
-    odisRegistedAddresses,
-    loading: lookupLoading,
-    error,
-    getLookupAddress,
-  } = useLookUpAddress(lookupAddress, session);
-
-  const handleLookupAddress = useCallback(() => {
-    if (session) {
-      getLookupAddress();
-    }
-  }, [session, odisRegistedAddresses]);
-
-  useEffect(() => {
-    handleLookupAddress();
-  }, []);
-
-  if (lookupLoading || status === "loading") {
+  if (isLoading || status === "loading") {
     return (
       <div className="flex flex-1 items-center justify-center relative">
         <BackHeader />
@@ -124,7 +115,7 @@ const RegisterPage = () => {
               }
 
               setTimeout(async () => {
-                await getLookupAddress();
+                // await getLookupAddress();
                 setLoading(false);
               }, 1000);
 
@@ -132,7 +123,7 @@ const RegisterPage = () => {
 
               toast("Revoked successfully");
             }}
-            disabled={loading || lookupLoading}
+            disabled={loading || isLoading}
             className="inline-flex my-5 w-full justify-center items-center gap-2 rounded-md bg-red-500 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white h-12"
           >
             {loading ? <p>Loading...</p> : <p>Revoke</p>}
@@ -149,7 +140,7 @@ const RegisterPage = () => {
                 return;
               }
               setTimeout(async () => {
-                await getLookupAddress();
+                // await getLookupAddress();
                 setLoading(false);
               }, 1000);
 
@@ -157,7 +148,7 @@ const RegisterPage = () => {
 
               router.push("/");
             }}
-            disabled={loading || lookupLoading}
+            disabled={loading || isLoading}
             className="inline-flex my-5 w-full justify-center items-center gap-2 rounded-md bg-gray-700 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white h-12"
           >
             {loading ? <p>Loading...</p> : <p>Register</p>}

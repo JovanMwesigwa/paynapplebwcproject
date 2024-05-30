@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
+import { signOut } from "next-auth/react";
 
 export const authOptions = {
   // Configure one or more authentication providers
@@ -51,9 +52,9 @@ export const authOptions = {
       return session;
     },
   },
-  pages: {
-    signIn: "/signin",
-  },
+  // pages: {
+  //   signIn: "/signin",
+  // },
 };
 
 export default NextAuth(authOptions);

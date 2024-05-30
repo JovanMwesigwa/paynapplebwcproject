@@ -67,6 +67,7 @@ export const useSocialConnect = () => {
    * @param identifier The identifier to register.
    * @returns True if the registration is successful, false otherwise.
    */
+
   const register = async (identifier: string) => {
     if (walletClient) {
       try {

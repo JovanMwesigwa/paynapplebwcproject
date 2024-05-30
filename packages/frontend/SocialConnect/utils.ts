@@ -1,3 +1,5 @@
+import { IdentifierPrefix } from "@celo/identity/lib/odis/identifier";
+
 const { OdisContextName } = require("@celo/identity/lib/odis/query");
 
 export const FA_CONTRACT = require("./abis/FederatedAttestations.json");
@@ -45,3 +47,12 @@ export const ACCOUNTS_PROXY_ADDRESS =
   process.env.NEXT_PUBLIC_ENVIRONMENT === "TESTNET"
     ? "0xed7f51A34B4e71fbE69B3091FcF879cD14bD73A9"
     : "0x7d21685C17607338b313a7174bAb6620baD0aaB7";
+
+export const getIdentifierPrefix = () => {
+  if (process.env.NEXT_PUBLIC_SOCIAL_CONNECT_PROVIDER === "TWITTER") {
+    return IdentifierPrefix.TWITTER;
+  } else if (process.env.NEXT_PUBLIC_SOCIAL_CONNECT_PROVIDER === "GITHUB") {
+    return IdentifierPrefix.TWITTER;
+  }
+  return IdentifierPrefix.TWITTER;
+};

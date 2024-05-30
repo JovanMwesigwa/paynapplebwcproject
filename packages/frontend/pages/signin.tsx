@@ -12,13 +12,12 @@ const SignInPage = () => {
   const [clientSideRendered, setClientSideRendered] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    setClientSideRendered(true);
-
-    if (session) {
-      router.push("/");
-    }
-  }, [session, router]);
+  // useEffect(() => {
+  //   setClientSideRendered(true);
+  //   if (session) {
+  //     router.push("/");
+  //   }
+  // }, [session, router]);
 
   if (status === "loading" || (clientSideRendered && session)) {
     return (
@@ -27,6 +26,16 @@ const SignInPage = () => {
       </div>
     );
   }
+
+  const handleSignIn = () => {
+    signIn("github", {
+      callbackUrl: "/",
+    });
+  };
+
+  const handleSignOut = () => {
+    signOut();
+  };
 
   return (
     <div className="flex flex-1 items-center justify-evenly flex-col h-screen">
@@ -48,11 +57,9 @@ const SignInPage = () => {
               <Button
                 onClick={() => {
                   if (!session) {
-                    signIn("github", {
-                      callbackUrl: "/",
-                    });
+                    handleSignIn();
                   } else {
-                    signOut();
+                    handleSignOut();
                   }
                 }}
                 className="inline-flex w-full justify-center items-center gap-2 rounded-md bg-gray-700 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white h-12"
