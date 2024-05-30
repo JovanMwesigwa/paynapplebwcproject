@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import useLookUpAddress from "@/hooks/useLookUpAddress";
 import { useRouter } from "next/router";
+import MainHeader from "@/components/MainHeader";
 
 export default function Home() {
   const { account, lookupAddress } = useSocialConnect();
@@ -24,7 +25,8 @@ export default function Home() {
   // }
 
   return (
-    <main className="w-full flex flex-col items-center text-gray-800 p-4 flex-1">
+    <main className="w-full flex flex-col items-center text-gray-800 p-4 flex-1 relative">
+      <MainHeader />
       {!account ? (
         "Connect your wallet to use SocialConnect"
       ) : (
