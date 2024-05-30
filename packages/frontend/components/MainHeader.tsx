@@ -21,7 +21,7 @@ const MainHeader = () => {
   return (
     <div className="flex flex-row h-12 border-b items-center justify-between fixed top-0 left-0 ring-0 w-full px-4">
       <Link href="/" className="flex flex-row items-center justify-center">
-        <h1 className="text-sm font-medium">🍏 Paynapple</h1>
+        <h1 className="text-base font-bold">🍏 Paynapple</h1>
       </Link>
 
       <Popover className="relative ">

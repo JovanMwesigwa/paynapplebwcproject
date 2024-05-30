@@ -124,7 +124,7 @@ const RegisterPage = () => {
               toast("Revoked successfully");
             }}
             disabled={loading || isLoading}
-            className="inline-flex my-5 w-full justify-center items-center gap-2 rounded-md bg-red-500 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white h-12"
+            className="inline-flex w-full justify-center items-center gap-2 rounded-md bg-red-500 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white h-9"
           >
             {loading ? <p>Loading...</p> : <p>Revoke</p>}
           </Button>
@@ -149,7 +149,7 @@ const RegisterPage = () => {
               router.push("/");
             }}
             disabled={loading || isLoading}
-            className="inline-flex my-5 w-full justify-center items-center gap-2 rounded-md bg-gray-700 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white h-12"
+            className="inline-flex w-full justify-center items-center gap-2 rounded-md bg-gray-700 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white h-9"
           >
             {loading ? <p>Loading...</p> : <p>Register</p>}
           </Button>

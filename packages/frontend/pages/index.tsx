@@ -1,9 +1,6 @@
-import { useSocialConnect } from "@/SocialConnect/useSocialConnect";
 import MainHeader from "@/components/MainHeader";
 
 export default function Home() {
-  const { account } = useSocialConnect();
-
   // useEffect(() => {
   //   if (session) {
   //     getLookupAddress();

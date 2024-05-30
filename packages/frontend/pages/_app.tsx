@@ -23,7 +23,7 @@ const connectors = connectorsForWallets(
     },
   ],
   {
-    appName: "Celo Composer",
+    appName: "Paynapple",
     projectId,
   }
 );
