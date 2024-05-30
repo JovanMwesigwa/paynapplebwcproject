@@ -84,12 +84,15 @@ export const useSocialConnect = () => {
 
         if (registerResponse.error) {
           console.error(registerResponse.error);
-          return false;
+          // return false;
+          return { success: false, error: registerResponse.error };
         }
-        return true;
+        // return true;
+        return { success: true, receipt: registerResponse.receipt };
       } catch (error: any) {
         console.error(error.message);
-        return false;
+        // return false;
+        return { success: false, error: error.message };
       } finally {
         setLoading(false);
       }
@@ -117,11 +120,15 @@ export const useSocialConnect = () => {
         });
 
         let deregisterResponse = await response.json();
+
         if (deregisterResponse.error) {
           console.error(deregisterResponse.error);
+          return { success: false, error: deregisterResponse.error };
         }
+        return { success: true, receipt: deregisterResponse.receipt };
       } catch (error: any) {
         console.error(error.message);
+        return { success: false, error: error.message };
       }
     }
   };

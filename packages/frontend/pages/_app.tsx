@@ -11,6 +11,7 @@ import { celo, celoAlfajores } from "viem/chains";
 import { WagmiProvider, createConfig, http } from "wagmi";
 import Layout from "../components/Layout";
 import "../styles/globals.css";
+import { Toaster } from "sonner";
 
 const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID as string; // get one at https://cloud.walletconnect.com/app
 
@@ -46,6 +47,7 @@ function App({ Component, pageProps }: AppProps) {
           <SessionProvider>
             <Layout>
               <Component {...pageProps} />
+              <Toaster />
             </Layout>
           </SessionProvider>
         </RainbowKitProvider>
