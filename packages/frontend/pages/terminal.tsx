@@ -29,7 +29,7 @@ const Terminal = () => {
 
   return (
     <div className="flex flex-col p-4 h-full w-full max-w-md mx-auto bg-white shadow-lg rounded-lg">
-      <h1 className="text-2xl font-bold mb-4 ">Order Terminal</h1>
+      <h1 className="text-xl font-bold mb-4 ">Order Terminal</h1>
       <div className="flex flex-col items-center mb-4">
         <div className="w-full bg-gray-100 p-4 rounded-lg text-right text-2xl mb-2">
           {input || "0.00"}

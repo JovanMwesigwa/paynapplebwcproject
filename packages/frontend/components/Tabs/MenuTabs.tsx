@@ -7,11 +7,6 @@ const MenuTabs = () => {
       <MenuCard />
       <MenuCard />
       <MenuCard />
-
-      <div className="flex flex-row bg-white shadow-md absolute right-0 top-10 rounded-l-full p-1  items-center justify-center text-orange-500 pl-3">
-        <h1 className="text-[10px]">View all</h1>
-        <ChevronRight size={12} />
-      </div>
     </div>
   );
 };

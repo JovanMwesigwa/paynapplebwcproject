@@ -4,7 +4,8 @@ import MainHeader from "@/components/MainHeader";
 import MenuCategory from "@/components/Selectors/MenuCatergory";
 import CategoryTabs from "@/components/Tabs/CategoryTabs";
 import MenuTabs from "@/components/Tabs/MenuTabs";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus, ShoppingBag } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
   // useEffect(() => {
@@ -54,6 +55,15 @@ export default function Home() {
       <MenuTabs />
       <MenuTabs />
       <MenuTabs />
+
+      <Link
+        href="/create"
+        className="w-12 h-12 bg-orange-500 fixed bottom-6 right-5 rounded-full shadow-md z-30 flex items-center justify-center"
+      >
+        <div className="relative">
+          <Plus size={20} className="text-white" />
+        </div>
+      </Link>
     </main>
   );
 }
