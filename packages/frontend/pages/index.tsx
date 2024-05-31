@@ -2,8 +2,14 @@ import BalancesCards from "@/components/BalancesCards";
 import BalancesHeader from "@/components/BalancesHeader";
 import MainHeader from "@/components/MainHeader";
 import MenuCategory from "@/components/Selectors/MenuCatergory";
+import CategoryTabs from "@/components/Tabs/CategoryTabs";
 import MenuTabs from "@/components/Tabs/MenuTabs";
-import { ChevronDown, CircleArrowUp } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  CircleArrowUp,
+} from "lucide-react";
 
 export default function Home() {
   // useEffect(() => {
@@ -31,7 +37,14 @@ export default function Home() {
         <div className="flex w-full">
           <h1 className="text-sm font-medium">Categories</h1>
         </div>
+
+        <div className="flex flex-row w-full gap-x-2 items-center justify-end text-orange-500">
+          <ChevronLeft size={15} />
+          <ChevronRight size={15} />
+        </div>
       </div>
+
+      <CategoryTabs />
 
       <div className="flex flex-row w-full mt-3 items-center justify-between">
         <div className="flex w-full">

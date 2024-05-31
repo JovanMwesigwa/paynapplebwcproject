@@ -1,6 +1,5 @@
-import { sales } from "@/data";
-import MenuCard from "../Cards/MenuCard";
 import { ChevronRight } from "lucide-react";
+import MenuCard from "../Cards/MenuCard";
 
 const MenuTabs = () => {
   return (

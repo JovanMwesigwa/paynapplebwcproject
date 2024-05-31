@@ -6,6 +6,13 @@ export interface Sales {
   color: string;
 }
 
+export interface MenuCategory {
+  emoji: string;
+  title: string;
+  numOfItems: number;
+  active: boolean;
+}
+
 export const sales: Sales[] = [
   {
     name: "Menu Sales",
@@ -27,5 +34,32 @@ export const sales: Sales[] = [
     percentage: 12,
     increase: true,
     color: "bg-red-500",
+  },
+];
+
+export const menuCategories: MenuCategory[] = [
+  {
+    emoji: "🍽️",
+    title: "All",
+    numOfItems: 3,
+    active: true,
+  },
+  {
+    emoji: "🍔",
+    title: "Burgers",
+    numOfItems: 5,
+    active: false,
+  },
+  {
+    emoji: "🍦",
+    title: "Desserts",
+    numOfItems: 2,
+    active: false,
+  },
+  {
+    emoji: "🍹",
+    title: "Drinks",
+    numOfItems: 4,
+    active: false,
   },
 ];
