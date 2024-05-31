@@ -1,4 +1,5 @@
-import { ChevronDown, CircleArrowUp } from "lucide-react";
+import { Calculator, ChevronDown, CircleArrowUp } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 const BalancesHeader = () => {
@@ -13,13 +14,26 @@ const BalancesHeader = () => {
         </div>
       </div>
       <div className="flex mb-3 flex-col">
-        <div className="flex flex-row items-center ">
-          <h1 className="text-xl font-bold">$1,256</h1>
-          <div className="flex flex-row items-center px-1 py-[2px] ml-2 justify-center rounded-sm bg-green-100">
-            <CircleArrowUp size={10} className="text-green-500" />
-            <p className="text-[10px] text-green-500 font-bold ml-1">+23%</p>
+        <div className="flex flex-row items-center justify-between w-full">
+          <div className="flex flex-row items-center ">
+            <h1 className="text-xl font-bold">$1,256</h1>
+            <div className="flex flex-row items-center px-1 py-[2px] ml-2 justify-center rounded-sm bg-green-100">
+              <CircleArrowUp size={10} className="text-green-500" />
+              <p className="text-[10px] text-green-500 font-bold ml-1">+23%</p>
+            </div>
           </div>
+
+          {/*  */}
+          <Link
+            href="/terminal"
+            className="flex flex-row items-center bg-yellow-400 py-1 rounded-sm px-3"
+          >
+            <Calculator size={13} className="text-gray-800 mr-1" />
+            <h1 className="text-[11px] text-gray-800">Terminal</h1>
+          </Link>
         </div>
+
+        {/*  */}
         <p className="text-[11px] font-thin">
           Yay! your sales have surged by $250 in the last month!
         </p>

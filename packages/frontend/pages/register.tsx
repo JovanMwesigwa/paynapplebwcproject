@@ -70,7 +70,7 @@ const RegisterPage = () => {
   const hasRegisteredAddress = !isEmptyObject(odisRegistedAddresses);
 
   return (
-    <div className="flex flex-1 items-center justify-center flex-col relative">
+    <div className="flex flex-1 items-center justify-center flex-col mt-16 relative">
       <MainHeader back />
 
       <div className="flex items-center justify-center flex-col">

@@ -1,16 +1,23 @@
+import LoadingPage from "@/components/Spinners/LoadingPage";
 import useFetchLookUpAddress from "@/hooks/query/useFetchLookUpAddress";
-import { Button } from "@headlessui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { signIn, signOut } from "next-auth/react";
-import Image from "next/image";
-import React from "react";
+import { HomeIcon, Link } from "lucide-react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { useAccount } from "wagmi";
-import LoadingPage from "../Spinners/LoadingPage";
 
 const ConnectWalletPage = () => {
   const { isConnected } = useAccount();
 
   const { session, status } = useFetchLookUpAddress();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isConnected) {
+      router.push("/");
+    }
+  }, [isConnected]);
 
   if (status === "loading") {
     return <LoadingPage />;
@@ -31,6 +38,18 @@ const ConnectWalletPage = () => {
         )}
 
         {isConnected && (
+          <div className="flex flex-col text-sm">
+            <p>Wallet Connected!</p>
+            <Link
+              href="/"
+              className="flex items-center gap-2 flex-row  text-black"
+            >
+              <HomeIcon size={20} />
+            </Link>
+          </div>
+        )}
+
+        {/* {isConnected && (
           <div className="flex w-full items-center justify-center p-4">
             <Button
               onClick={() => {
@@ -59,7 +78,7 @@ const ConnectWalletPage = () => {
               )}
             </Button>
           </div>
-        )}
+        )} */}
       </>
     </div>
   );

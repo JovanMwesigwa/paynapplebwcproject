@@ -1,17 +1,20 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
-import ConnectWalletPage from "./WalletConnectComponents/ConnectWalletPage";
+import { useRouter } from "next/router";
 
 export default function Footer() {
   const { isConnected, isReconnecting, isConnecting, isDisconnected } =
     useAccount();
+
+  const router = useRouter();
 
   if (isReconnecting || isConnecting) {
     return null;
   }
 
   if (!isConnected || isDisconnected) {
-    return <ConnectWalletPage />;
+    // return <ConnectWalletPage />;
+    router.push("/connect-wallet");
   }
 
   return (
