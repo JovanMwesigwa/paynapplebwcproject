@@ -39,7 +39,7 @@ const MainHeader = ({ back }: { back?: boolean }) => {
   const hasRegisteredAddress = !isEmptyObject(odisRegistedAddresses);
 
   return (
-    <div className="flex flex-row h-12 border-b items-center justify-between fixed top-0 left-0 ring-0 w-full px-4">
+    <div className="flex flex-row h-12 border-b bg-white z-10 items-center justify-between fixed top-0 left-0 ring-0 w-full px-4">
       {back ? (
         <div
           onClick={() => router.back()}
