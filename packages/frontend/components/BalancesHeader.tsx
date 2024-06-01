@@ -1,8 +1,16 @@
+import useFetchItems from "@/hooks/query/useFetchItems";
+import { weiToCUSD } from "@/utils";
 import { Calculator, ChevronDown, CircleArrowUp } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
 const BalancesHeader = () => {
+  const { data, isLoading, error } = useFetchItems({
+    functionName: "getBalance",
+  });
+
+  const balance = data ? weiToCUSD(Number(data.toString())) : "0.00";
+
   return (
     <div className="flex flex-col w-full">
       <div className="flex flex-row w-full items-center justify-between mb-3">
@@ -16,10 +24,10 @@ const BalancesHeader = () => {
       <div className="flex mb-3 flex-col">
         <div className="flex flex-row items-center justify-between w-full">
           <div className="flex flex-row items-center ">
-            <h1 className="text-xl font-bold">$1,256</h1>
+            {!isLoading && <h1 className="text-xl font-bold">${balance}</h1>}
             <div className="flex flex-row items-center px-1 py-[2px] ml-2 justify-center rounded-sm bg-green-100">
               <CircleArrowUp size={10} className="text-green-500" />
-              <p className="text-[10px] text-green-500 font-bold ml-1">+23%</p>
+              <p className="text-[10px] text-green-500 font-bold ml-1">+1%</p>
             </div>
           </div>
 

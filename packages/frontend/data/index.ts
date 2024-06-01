@@ -15,21 +15,21 @@ export interface MenuCategory {
 
 export const sales: Sales[] = [
   {
-    name: "Menu Sales",
+    name: "Menu",
     total: 1256,
     percentage: 6,
     increase: true,
     color: "bg-blue-500",
   },
   {
-    name: "Online Orders",
+    name: "Online",
     total: 1256,
     percentage: 13,
     increase: false,
     color: "bg-orange-500",
   },
   {
-    name: "In-store Orders",
+    name: "In-Store",
     total: 1256,
     percentage: 12,
     increase: true,

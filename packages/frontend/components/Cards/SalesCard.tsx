@@ -1,17 +1,20 @@
-import { Sales } from "@/data";
+import { Sales, sales } from "@/data";
+import { SalesT } from "@/types";
 import { CircleArrowUp } from "lucide-react";
 import React from "react";
 
-const SalesCard = ({ sale }: { sale: Sales }) => {
+const SalesCard = ({ sale }: { sale: SalesT }) => {
+  const saleColor = sales.find((s) => s.name === sale.name)?.color;
+
   return (
     <div className="w-full h-full border rounded-md bg-neutral-50 border-neutral-100 px-2 flex flex-col justify-evenly">
       <div className="flex flex-row w-full items-center">
-        <div className={`h-1 ${sale.color} w-3 rounded-full`}></div>
+        <div className={`h-1 ${saleColor} w-3 rounded-full`}></div>
         <h1 className="text-[10px] mx-1 ">{sale.name}</h1>
       </div>
 
       <div className="flex flex-row items-center ">
-        <h1 className="text-base font-bold">${sale.total}</h1>
+        <h1 className="text-base font-bold">${sale.amount.toString()}</h1>
         <div
           className={`flex flex-row items-center px-1 py-[2px] ml-2 justify-center rounded-sm ${
             sale.increase ? "bg-green-100" : "bg-red-100"
@@ -27,7 +30,7 @@ const SalesCard = ({ sale }: { sale: Sales }) => {
             } font-bold ml-1`}
           >
             {sale.increase ? "+" : "-"}
-            {sale.percentage}%
+            {sale.increase.toString()}%
           </p>
         </div>
       </div>
