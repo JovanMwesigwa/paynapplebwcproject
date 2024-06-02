@@ -1,7 +1,8 @@
 import LoadingPage from "@/components/Spinners/LoadingPage";
 import useFetchLookUpAddress from "@/hooks/query/useFetchLookUpAddress";
+import { Button } from "@headlessui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { HomeIcon, Link } from "lucide-react";
+import { ChevronLeft, HomeIcon, Link } from "lucide-react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useAccount } from "wagmi";
@@ -25,8 +26,8 @@ const ConnectWalletPage = () => {
   }
 
   return (
-    <div className="flex flex-1 items-center justify-evenly flex-col h-screen absolute top-0 bottom-0 left-0 right-0 bg-white">
-      <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-1 items-center justify-evenly flex-col py-32 bg-white">
+      <div className="flex flex-col items-center justify-center my-5">
         <h1 className="text-3xl font-bold">Paynapple 🍏</h1>
         <p className="text-xs">Connect your wallet to continue</p>
       </div>
@@ -39,14 +40,18 @@ const ConnectWalletPage = () => {
         )}
 
         {isConnected && (
-          <div className="flex flex-col text-sm">
+          <div className="flex flex-col text-sm w-full items-center justify-center">
             <p>Wallet Connected!</p>
-            <Link
-              href="/"
-              className="flex items-center gap-2 flex-row  text-black"
+
+            <Button
+              onClick={() => {
+                router.push("/");
+              }}
+              className="flex items-center justify-center gap-1 text-blue-500 rounded-md  py-1.5 px-3 text-xs my-5 font-semibold  h-12"
             >
-              <HomeIcon size={20} />
-            </Link>
+              <ChevronLeft className="w-5 h-5" />
+              <p>Go back Home</p>
+            </Button>
           </div>
         )}
 

@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { Delete } from "lucide-react"; // Import the delete icon from Lucide
 import PayTerminal from "@/components/Dialog/PayTerminal";
+import { Button } from "@headlessui/react";
+import { useRouter } from "next/router";
 
 const Terminal = () => {
   const [input, setInput] = useState("");
   const [total, setTotal] = useState(0);
+
+  const router = useRouter();
 
   const handleButtonClick = (value: string) => {
     setInput(input + value);
@@ -29,7 +33,18 @@ const Terminal = () => {
 
   return (
     <div className="flex flex-col p-4 h-full w-full max-w-md mx-auto bg-white shadow-lg rounded-lg">
-      <h1 className="text-xl font-bold mb-4 ">Order Terminal</h1>
+      <div className="flex flex-row mb-4 items-center justify-between w-full">
+        <h1 className="text-xl font-bold  ">Order Terminal</h1>
+
+        <Button
+          onClick={() => {
+            router.push("/menu");
+          }}
+          className="text-sm font-medium text-gray-500"
+        >
+          <h1 className="text-sm font-medium text-orange-500  ">Home</h1>
+        </Button>
+      </div>
       <div className="flex flex-col items-center mb-4">
         <div className="w-full bg-gray-100 p-4 rounded-lg text-right text-2xl mb-2">
           {input || "0.00"}

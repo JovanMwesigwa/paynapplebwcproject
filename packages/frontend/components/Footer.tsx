@@ -19,7 +19,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-gypsum mt-auto border-t flex items-center justify-center h-16">
-      {isConnected && <ConnectButton />}
+      {isConnected && !isConnecting && !isReconnecting && <ConnectButton />}
     </footer>
   );
 }

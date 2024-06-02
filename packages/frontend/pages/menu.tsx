@@ -2,7 +2,13 @@ import RawHeader from "@/components/RawHeader";
 import MenuCategory from "@/components/Selectors/MenuCatergory";
 import CategoryTabs from "@/components/Tabs/CategoryTabs";
 import MenuTabs from "@/components/Tabs/MenuTabs";
-import { ChevronLeft, ChevronRight, ShoppingBag } from "lucide-react";
+import {
+  Calculator,
+  ChevronLeft,
+  ChevronRight,
+  ShoppingBag,
+} from "lucide-react";
+import Link from "next/link";
 
 export default function Menu() {
   return (
@@ -16,8 +22,13 @@ export default function Menu() {
         </div>
 
         <div className="flex flex-row w-full gap-x-2 items-center justify-end text-orange-500">
-          <ChevronLeft size={15} />
-          <ChevronRight size={15} />
+          <Link
+            href="/terminal"
+            className="flex flex-row items-center bg-yellow-400 py-1 rounded-sm px-3"
+          >
+            <Calculator size={13} className="text-gray-800 mr-1" />
+            <h1 className="text-[11px] text-gray-800">Terminal</h1>
+          </Link>
         </div>
       </div>
 
