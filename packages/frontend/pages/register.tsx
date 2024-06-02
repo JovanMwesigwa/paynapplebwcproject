@@ -62,8 +62,12 @@ const RegisterPage = () => {
       setLoading(false);
       return;
     }
-    toast("Registered successfully");
     queryClient.invalidateQueries();
+
+    toast("Registered successfully");
+    setTimeout(() => {
+      router.push("/");
+    }, 6000);
   };
 
   if (isLoading || status === "loading") {
