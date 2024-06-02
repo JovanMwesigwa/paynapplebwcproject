@@ -16,6 +16,7 @@ const ConnectWalletPage = () => {
   useEffect(() => {
     if (isConnected) {
       router.back();
+      // This will navigate the user to their most recent page
     }
   }, [isConnected]);
 
