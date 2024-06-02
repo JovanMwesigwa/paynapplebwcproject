@@ -8,6 +8,8 @@ export default function Footer() {
 
   const router = useRouter();
 
+  const pathname = router.pathname;
+
   if (isReconnecting || isConnecting) {
     return null;
   }
@@ -16,6 +18,8 @@ export default function Footer() {
     // return <ConnectWalletPage />;
     router.push("/connect-wallet");
   }
+
+  if (pathname.includes("connect-wallet")) return null;
 
   return (
     <footer className="bg-gypsum mt-auto border-t flex items-center justify-center h-16">
