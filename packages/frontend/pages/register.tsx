@@ -1,13 +1,15 @@
 import { useSocialConnect } from "@/SocialConnect/useSocialConnect";
 import BackHeader from "@/components/BackHeader";
 import MainHeader from "@/components/MainHeader";
+import RawHeader from "@/components/RawHeader";
 import LoadingPage from "@/components/Spinners/LoadingPage";
 import useFetchLookUpAddress from "@/hooks/query/useFetchLookUpAddress";
 import { Button } from "@headlessui/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Loader } from "lucide-react";
+import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import { toast } from "sonner";
 import { useAccount } from "wagmi";
 
@@ -32,17 +34,24 @@ const RegisterPage = () => {
 
   const queryClient = useQueryClient();
 
+  useEffect(() => {
+    if (error) {
+      toast.error("Failed to fetch address data");
+    }
+  }, [error]);
+
   const handleRevoke = async () => {
     setLoading(true);
     const response = await revoke((session as any)?.user.name);
+
     if (response && !response.success) {
       setActionError(response.error);
       setLoading(false);
       return;
     }
-    setLoading(false);
-    queryClient.invalidateQueries();
     toast("Revoked successfully");
+    // queryClient.invalidateQueries();
+    signOut();
   };
 
   const handleRegister = async () => {
@@ -53,10 +62,12 @@ const RegisterPage = () => {
       setLoading(false);
       return;
     }
-    setLoading(false);
-    queryClient.invalidateQueries();
     toast("Registered successfully");
-    router.push("/");
+    queryClient.invalidateQueries();
+
+    setTimeout(() => {
+      router.push("/");
+    }, 5000);
   };
 
   if (isLoading || status === "loading") {
@@ -71,7 +82,8 @@ const RegisterPage = () => {
 
   return (
     <div className="flex flex-1 items-center justify-center flex-col mt-16 relative">
-      <MainHeader back />
+      {/* <MainHeader back /> */}
+      <RawHeader back />
 
       <div className="flex items-center justify-center flex-col">
         <div className="flex flex-col items-center justify-center">
@@ -161,7 +173,7 @@ const RegisterPage = () => {
             {loading ? (
               <Loader size={18} className="mr-3 animate-spin" />
             ) : (
-              <p>Register</p>
+              <p>Register with Social Connect</p>
             )}
           </Button>
         )}

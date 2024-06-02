@@ -6,7 +6,7 @@ import { signOut } from "next-auth/react";
 import useFetchLookUpAddress from "@/hooks/query/useFetchLookUpAddress";
 import Image from "next/image";
 import LoadingPage from "./Spinners/LoadingPage";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, CircleX, LogOut, X } from "lucide-react";
 
 const MainHeader = ({ back }: { back?: boolean }) => {
   const {
@@ -23,21 +23,21 @@ const MainHeader = ({ back }: { back?: boolean }) => {
     return <LoadingPage />;
   }
 
-  if (
-    !odisRegistedAddresses &&
-    !isLoading &&
-    session &&
-    status === "authenticated"
-  ) {
-    router.push("/register");
-  }
-
   const isEmptyObject = (obj: any) => {
     if (obj === null || obj === undefined) return true;
     return Object.keys(obj).length === 0 && obj.constructor === Object;
   };
 
   const hasRegisteredAddress = !isEmptyObject(odisRegistedAddresses);
+
+  if (
+    !hasRegisteredAddress &&
+    !isLoading &&
+    session &&
+    status === "authenticated"
+  ) {
+    router.push("/register");
+  }
 
   return (
     <div className="flex flex-row h-12 border-b bg-white z-10 items-center justify-between fixed top-0 left-0 ring-0 w-full px-4">
@@ -67,54 +67,65 @@ const MainHeader = ({ back }: { back?: boolean }) => {
             )}
           </div>
         </PopoverButton>
-        <PopoverPanel
-          anchor="bottom"
-          className="flex flex-col bg-white py-2 border rounded-md shadow-md"
-        >
-          <div className="flex border-b px-3 py-1 items-center justify-center">
-            {hasRegisteredAddress && (
-              <p className="text-[11px]">
-                {String(odisRegistedAddresses).slice(0, 4)}...
-                {String(odisRegistedAddresses).slice(-4)}
-              </p>
-            )}
-          </div>
-          {session && (
-            <div className="flex px-3 py-1 border-b items-center justify-center">
-              <p className="text-[11px]">
-                {/* @ts-ignore */}
-                {session.username ? (
-                  <>
-                    {/* @ts-ignore */}
-                    {session.username.slice(0, 3)}...
-                    {/* @ts-ignore */}
-                    {session.username.slice(-3)}
-                  </>
-                ) : (
-                  <>
-                    {session.user?.name?.slice(0, 3)}...
-                    {session.user?.name?.slice(-3)}
-                  </>
+        <PopoverPanel className="fixed inset-0 flex flex-col bg-white py-2 border rounded-md shadow-md md:absolute md:top-full md:left-0 md:w-36 md:rounded-lg md:inset-auto">
+          {({ close }) => (
+            <>
+              <div className="flex justify-end p-2">
+                <X className="w-6 h-6 cursor-pointer" onClick={() => close()} />
+              </div>
+              <div className="flex flex-col items-center space-y-4 px-4">
+                {hasRegisteredAddress && (
+                  <div className="flex border-b w-full justify-center py-2">
+                    <p className="text-sm">
+                      {String(odisRegistedAddresses).slice(0, 4)}...
+                      {String(odisRegistedAddresses).slice(-4)}
+                    </p>
+                  </div>
                 )}
-              </p>
-            </div>
+                {session && (
+                  <div className="flex border-b w-full justify-center py-2 gap-x-2">
+                    <Image
+                      src="/google.svg"
+                      width={20}
+                      height={20}
+                      alt="google"
+                    />
+                    <p className="text-sm">
+                      {/* @ts-ignore */}
+                      {session.username ? (
+                        <>
+                          {/* @ts-ignore */}
+                          {session.username}
+                        </>
+                      ) : (
+                        <>{session.user?.name}</>
+                      )}
+                    </p>
+                  </div>
+                )}
+                <div
+                  onClick={() => signOut()}
+                  className="flex border-b w-full justify-center py-2 cursor-pointer flex-row items-center gap-x-2"
+                >
+                  <p className="text-sm">Logout</p>
+                  <LogOut size={18} />
+                </div>
+                <Link
+                  href="/register"
+                  className="flex w-full justify-center py-2 gap-x-2"
+                >
+                  {hasRegisteredAddress ? (
+                    <>
+                      <p className="text-sm text-red-500">Revoke</p>
+                      <CircleX size={18} className="text-red-500" />
+                    </>
+                  ) : (
+                    <p className="text-sm text-green-500">Register</p>
+                  )}
+                </Link>
+              </div>
+            </>
           )}
-          <div
-            onClick={() => signOut()}
-            className="flex px-3 py-1 flex-row border-b items-center justify-center"
-          >
-            <p className="text-xs">Logout</p>
-          </div>
-          <Link
-            href="/register"
-            className="flex px-3 pt-1 items-center justify-center"
-          >
-            {hasRegisteredAddress ? (
-              <p className="text-xs text-red-500">Revoke</p>
-            ) : (
-              <p className="text-xs text-green-500">Register</p>
-            )}
-          </Link>
         </PopoverPanel>
       </Popover>
     </div>
