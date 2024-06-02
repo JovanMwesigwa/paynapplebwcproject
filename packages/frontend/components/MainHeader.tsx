@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { signOut } from "next-auth/react";
 import useFetchLookUpAddress from "@/hooks/query/useFetchLookUpAddress";
 import Image from "next/image";
@@ -9,6 +9,8 @@ import LoadingPage from "./Spinners/LoadingPage";
 import { ArrowLeft, CircleX, LogOut, X } from "lucide-react";
 
 const MainHeader = ({ back }: { back?: boolean }) => {
+  const [hasRegisteredAddress, setHasRegisteredAddress] = useState(false);
+
   const {
     data: odisRegistedAddresses,
     isLoading,
@@ -19,24 +21,23 @@ const MainHeader = ({ back }: { back?: boolean }) => {
 
   const router = useRouter();
 
+  useEffect(() => {
+    const isEmptyObject = (obj: any) => {
+      if (obj === null || obj === undefined) return true;
+      return Object.keys(obj).length === 0 && obj.constructor === Object;
+    };
+
+    const attested = !isEmptyObject(odisRegistedAddresses);
+
+    setHasRegisteredAddress(attested);
+
+    if (!isLoading && session && status === "authenticated" && !attested) {
+      router.push("/register");
+    }
+  }, [isLoading, session, status, hasRegisteredAddress]);
+
   if (isLoading || status === "loading") {
     return <LoadingPage />;
-  }
-
-  const isEmptyObject = (obj: any) => {
-    if (obj === null || obj === undefined) return true;
-    return Object.keys(obj).length === 0 && obj.constructor === Object;
-  };
-
-  const hasRegisteredAddress = !isEmptyObject(odisRegistedAddresses);
-
-  if (
-    !hasRegisteredAddress &&
-    !isLoading &&
-    session &&
-    status === "authenticated"
-  ) {
-    router.push("/register");
   }
 
   return (
