@@ -1,4 +1,5 @@
 import RawHeader from "@/components/RawHeader";
+import { OLAS_ENDPOINT } from "@/constants";
 import { Button } from "@headlessui/react";
 import { SendHorizonal } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
@@ -28,17 +29,41 @@ const ChatPage: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (input.trim()) {
-      setMessages([...messages, { text: input, sender: "user" }]);
+      const userMessage: Message = { text: input, sender: "user" };
+      setMessages((prevMessages) => [...prevMessages, userMessage]);
       setInput("");
-      // Add AI response logic here
-      setTimeout(() => {
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { text: "Chef AI: " + input, sender: "bot" },
-        ]);
-      }, 1000);
+
+      try {
+        const response = await fetch(`${OLAS_ENDPOINT}/prompt`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            prompt_text: input,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await response.json();
+        const botMessage: Message = {
+          text: "Chef AI: " + data.result,
+          sender: "bot",
+        };
+        setMessages((prevMessages) => [...prevMessages, botMessage]);
+      } catch (error) {
+        console.error("Error generating AI prompt:", error);
+        const botMessage: Message = {
+          text: "Chef AI: Sorry, something went wrong.",
+          sender: "bot",
+        };
+        setMessages((prevMessages) => [...prevMessages, botMessage]);
+      }
     }
   };
 
@@ -74,7 +99,7 @@ const ChatPage: React.FC = () => {
           value={input}
           onKeyPress={handleKeyPress}
           onChange={(e) => setInput(e.target.value)}
-          className="flex-1 p-2  border-gray-300 rounded-full px-5 outline-none bg-neutral-200 text-sm"
+          className="flex-1 p-2 border-gray-300 rounded-full px-5 outline-none bg-neutral-200 text-sm"
           placeholder="Type here..."
         />
         <Button
