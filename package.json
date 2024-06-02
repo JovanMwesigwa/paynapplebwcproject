@@ -24,6 +24,7 @@
   "dependencies": {
     "@celo/contractkit": "^8.0.0",
     "lucide-react": "^0.381.0",
+    "openai": "^4.47.3",
     "react-hook-form": "^7.51.5",
     "react-qr-code": "^2.0.13",
     "web3": "1.10"

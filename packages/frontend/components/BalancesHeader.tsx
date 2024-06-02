@@ -68,20 +68,36 @@ const BalancesHeader = () => {
       <div className="flex flex-row w-full items-center justify-between mb-3">
         <h1 className="text-[12px] font-medium">Total sales</h1>
 
-        <Button
-          onClick={onSubmit}
-          disabled={loading}
-          className={`flex flex-row items-center  bg-purple-500 text-white p-1 px-2 rounded-sm`}
-        >
-          {loading ? (
-            <Loader size={15} className="animate-spin text-white" />
-          ) : (
-            <>
-              <h1 className="text-[11px]  font-light ">Withdraw</h1>
-              <ChevronRight size={18} className="text-white" />
-            </>
-          )}
-        </Button>
+        <div className="flex flex-row gap-x-3 ">
+          <Link
+            href="/menu"
+            className={`flex flex-row items-center text-orange-500 border border-orange-500 p-1 px-2 rounded-sm`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {loading ? (
+              <Loader size={15} className="animate-spin text-white" />
+            ) : (
+              <>
+                <h1 className="text-[11px] ">Open menu</h1>
+              </>
+            )}
+          </Link>
+          <Button
+            onClick={onSubmit}
+            disabled={loading}
+            className={`flex flex-row items-center  bg-purple-500 text-white p-1 px-2 rounded-sm`}
+          >
+            {loading ? (
+              <Loader size={15} className="animate-spin text-white" />
+            ) : (
+              <>
+                <h1 className="text-[11px]  font-light ">Withdraw</h1>
+                <ChevronRight size={18} className="text-white" />
+              </>
+            )}
+          </Button>
+        </div>
       </div>
       <div className="flex mb-3 flex-col">
         <div className="flex flex-row items-center justify-between w-full">

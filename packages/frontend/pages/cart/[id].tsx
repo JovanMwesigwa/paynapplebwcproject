@@ -7,6 +7,7 @@ import { CeloContract, newKitFromWeb3 } from "@celo/contractkit";
 import { Button } from "@headlessui/react";
 import { ChevronLeft, ChevronRight, Loader, Sparkles } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -179,10 +180,13 @@ const CartPage = () => {
           <p className="text-[10px] text-neutral-400">Powered by Olas</p>
         </div>
 
-        <div className="flex flex-row items-center justify-center bg-purple-600 w-20 h-8 rounded-full">
-          <p className="text-white text-sm mx-2">Ask</p>
+        <Link
+          href="/chat"
+          className="flex flex-row items-center justify-center bg-purple-600 px-3 h-8 rounded-full"
+        >
+          <p className="text-white text-sm mx-2 font-medium">AI Chef</p>
           <Sparkles size={13} className="text-white" />
-        </div>
+        </Link>
       </div>
 
       <Button
