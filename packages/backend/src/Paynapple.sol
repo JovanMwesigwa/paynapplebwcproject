@@ -69,9 +69,9 @@ contract Paynapple {
         Category itemCategory
     );
 
-    constructor(address _stableCoin) {
+    constructor(address _stableCoin, address _shopOwner) {
         i_owner = msg.sender;
-        s_shopOwner = msg.sender;
+        s_shopOwner = _shopOwner;
         stableCoin = IERC20(_stableCoin);
 
         // Create Menu Items
@@ -80,6 +80,7 @@ contract Paynapple {
 
     // errors
     error Paynapple__NotAuthorized();
+    error Paynapple__NotShopOwner();
     error Paynapple__NotEnoughStock();
 
     // Add a new menu item
@@ -90,7 +91,7 @@ contract Paynapple {
         uint256 price,
         Category itemCategory,
         uint256 stockCount
-    ) public onlyOwner {
+    ) public onlyShopOwner {
         MenuItem memory newItem = MenuItem({
             id: s_menuItemsCount,
             name: name,
@@ -154,7 +155,7 @@ contract Paynapple {
 
     modifier onlyShopOwner() {
         if (msg.sender != s_shopOwner) {
-            revert Paynapple__NotAuthorized();
+            revert Paynapple__NotShopOwner();
         }
         _;
     }
@@ -290,13 +291,57 @@ contract Paynapple {
 
     // Helper functions
 
+    // Add a new menu item
+    function mockAddMenuItems(
+        string memory name,
+        string memory description,
+        string memory image,
+        uint256 price,
+        Category itemCategory,
+        uint256 stockCount
+    ) internal {
+        MenuItem memory newItem = MenuItem({
+            id: s_menuItemsCount,
+            name: name,
+            description: description,
+            image: image,
+            price: price,
+            itemCategory: itemCategory,
+            stockCount: stockCount
+        });
+
+        s_menuItems.push(newItem);
+
+        // itemIndex[name] = s_menuItemsCount;
+        s_itemInfo[s_menuItemsCount] = newItem;
+
+        s_menuItemsCount++;
+
+        // Update the corresponging item count e.g. burgerCount or dessertCount or drinkCount
+        if (itemCategory == Category.Burgers) {
+            s_burgersCount++;
+        } else if (itemCategory == Category.Desserts) {
+            s_dessertsCount++;
+        } else if (itemCategory == Category.Drinks) {
+            s_drinksCount++;
+        }
+
+        emit MenuItemAdded(
+            s_menuItemsCount,
+            name,
+            description,
+            price,
+            itemCategory
+        );
+    }
+
     function createStarterData() internal {
         // Create Menu sales
         s_sales[SalesType.Menu] = Sale("Menu", SalesType.Menu, 0, 0);
         s_sales[SalesType.InStore] = Sale("In-Store", SalesType.InStore, 0, 0);
         s_sales[SalesType.Online] = Sale("Online", SalesType.Online, 0, 0);
 
-        addMenuItem(
+        mockAddMenuItems(
             "Cheeseburger",
             "A delicious cheeseburger",
             "https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=2097&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -305,7 +350,7 @@ contract Paynapple {
             100
         );
 
-        addMenuItem(
+        mockAddMenuItems(
             "Chocolate Cake",
             "A delicious chocolate cake",
             "https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?q=80&w=2304&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -314,7 +359,7 @@ contract Paynapple {
             100
         );
 
-        addMenuItem(
+        mockAddMenuItems(
             "Coke",
             "A refreshing coke",
             "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -323,7 +368,7 @@ contract Paynapple {
             100
         );
 
-        addMenuItem(
+        mockAddMenuItems(
             "Fries",
             "A delicious fries",
             "https://images.unsplash.com/photo-1576107232684-1279f390859f?q=80&w=2835&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
