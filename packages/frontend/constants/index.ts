@@ -1,7 +1,7 @@
 import { abi } from "../abi/abi.json";
 import ERC20ABI from "../abi/ERC20.json";
 
-export const CONTRACT_ADDRESS = "0xb3D75E42Ed2c62d545F75DcFA3633553f27B4F35";
+export const CONTRACT_ADDRESS = "0x1e5221066FE827c40BaF71a2faA2Fe0A502eB27F";
 export const STABLECOIN_ADDRESS = "0x874069fa1eb16d44d622f2e0ca25eea172369bc1";
 export const ERC20_ABI = ERC20ABI;
 export const CONTRACT_ABI = abi;

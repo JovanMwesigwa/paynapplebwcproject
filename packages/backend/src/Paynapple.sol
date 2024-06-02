@@ -185,7 +185,7 @@ contract Paynapple {
 
     function withdraw() public onlyShopOwner {
         uint256 balance = stableCoin.balanceOf(address(this));
-        stableCoin.transfer(i_owner, balance);
+        stableCoin.transfer(msg.sender, balance);
     }
 
     function setShopOwner(address shopOwner) public onlyOwner {
