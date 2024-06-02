@@ -71,6 +71,7 @@ contract Paynapple {
 
     constructor(address _stableCoin) {
         i_owner = msg.sender;
+        s_shopOwner = msg.sender;
         stableCoin = IERC20(_stableCoin);
 
         // Create Menu Items
@@ -133,7 +134,7 @@ contract Paynapple {
         uint256 price,
         Category itemCategory,
         uint256 stockCount
-    ) public onlyOwner {
+    ) public onlyShopOwner {
         s_menuItems[id].name = name;
         s_menuItems[id].description = description;
         s_menuItems[id].image = image;
