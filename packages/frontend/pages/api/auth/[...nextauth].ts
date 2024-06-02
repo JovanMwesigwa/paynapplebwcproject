@@ -57,6 +57,7 @@ export const authOptions = {
       return session;
     },
   },
+  // Using the default pages for signin, signout, error,
   // pages: {
   //   signIn: "/signin",
   // },
