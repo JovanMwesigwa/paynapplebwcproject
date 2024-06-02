@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@celo/contractkit": "^8.0.0",
     "@celo/identity": "^5.1.2",
     "@celo/poprf": "^0.1.9",
     "@celo/rainbowkit-celo": "^1.2.0",
@@ -30,7 +31,8 @@
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "viem": "^2.10.5",
-    "wagmi": "^2.8.7"
+    "wagmi": "^2.8.7",
+    "web3": "1.10"
   },
   "devDependencies": {
     "@types/node": "^20",
