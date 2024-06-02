@@ -1,4 +1,4 @@
-import abi from "../abi/abi.json"; // Use default import for abi
+import { abi } from "../abi/abi.json";
 import ERC20ABI from "../abi/ERC20.json";
 
 export const CONTRACT_ADDRESS = "0x1e5221066FE827c40BaF71a2faA2Fe0A502eB27F";
