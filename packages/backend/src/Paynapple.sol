@@ -41,6 +41,16 @@ contract Paynapple {
         uint256 increase;
     }
 
+    struct Order {
+        uint256 id;
+        uint256 itemId;
+        uint256 quantity;
+        uint256 total;
+        address customer;
+        bool isPaid;
+        SalesType salesType;
+    }
+
     // Array of menu items
     MenuItem[] private s_menuItems;
 
@@ -68,6 +78,7 @@ contract Paynapple {
 
     // errors
     error Paynapple__NotAuthorized();
+    error Paynapple__NotEnoughStock();
 
     // Add a new menu item
     function addMenuItem(
@@ -137,6 +148,43 @@ contract Paynapple {
             revert Paynapple__NotAuthorized();
         }
         _;
+    }
+
+    function buyItem(uint256 id, uint256 quantity) public payable {
+        MenuItem memory item = s_menuItems[id];
+
+        // require(item.stockCount >= quantity, "Not enough stock");
+        if (item.stockCount < quantity) {
+            revert Paynapple__NotEnoughStock();
+        }
+
+        uint256 total = item.price * quantity;
+
+        // stableCoin.transferFrom(msg.sender, address(this), total);
+
+        item.stockCount -= quantity;
+
+        s_menuItems[id] = item;
+
+        Sale memory sale = s_sales[SalesType.Menu];
+        sale.amount += total;
+        sale.increase += 1;
+
+        s_sales[SalesType.Menu] = sale;
+    }
+
+    function withdraw() public onlyOwner {
+        uint256 balance = stableCoin.balanceOf(address(this));
+        stableCoin.transfer(i_owner, balance);
+    }
+
+    receive() external payable {
+        // Set the sales type menu to InStore
+        Sale memory sale = s_sales[SalesType.InStore];
+        sale.amount += msg.value;
+        sale.increase += 1;
+
+        s_sales[SalesType.InStore] = sale;
     }
 
     // View function to get the number of menu items

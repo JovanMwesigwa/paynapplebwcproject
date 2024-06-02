@@ -1,19 +1,91 @@
 import RawHeader from "@/components/RawHeader";
 import LoadingPage from "@/components/Spinners/LoadingPage";
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/constants";
 import useFetchItemsWithArgs from "@/hooks/query/useFetchItemWithArgs";
 import { MenuT } from "@/types";
+import { CeloContract, newKitFromWeb3 } from "@celo/contractkit";
 import { Button } from "@headlessui/react";
-import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader, Sparkles } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import { toast } from "sonner";
+import { useWriteContract } from "wagmi";
+import Web3 from "web3";
 
 const CartPage = () => {
   const { query } = useRouter();
+
+  const [loading, setLoading] = useState(false);
 
   const { data, isLoading, error } = useFetchItemsWithArgs({
     functionName: "getMenuItem",
     args: [query.id],
   });
+
+  const router = useRouter();
+
+  const onSubmit = async () => {
+    setLoading(true);
+    try {
+      // Get the connected provider and signer
+      const web3 = new Web3(window.ethereum);
+      const kit = newKitFromWeb3(web3);
+
+      let accounts = await web3.eth.getAccounts();
+
+      // @ts-ignore
+      kit.defaultAccount = accounts[0];
+
+      const cUSDcontract = await kit.contracts.getStableToken();
+      const amount = kit.web3.utils.toWei(item.price.toString());
+
+      // First send the cUSD to the contract
+      const txResponse = await cUSDcontract
+        .transfer(CONTRACT_ADDRESS, amount)
+        .send({
+          from: kit.defaultAccount,
+          feeCurrency: cUSDcontract.address,
+        });
+
+      // Wait for the transaction to be processed if was successful then proceed to make the order
+      const recipt = await txResponse.waitReceipt();
+
+      // Check to see if the transaction was successful
+
+      // Send the order to the contract
+      if (!recipt.status) {
+        setLoading(false);
+        toast("Transaction failed");
+        return;
+      }
+
+      const contract = new kit.connection.web3.eth.Contract(
+        // @ts-ignore
+        CONTRACT_ABI,
+        CONTRACT_ADDRESS
+      );
+
+      const tx = await contract.methods.buyItem(query.id, 1).send({
+        from: kit.defaultAccount,
+        feeCurrency: cUSDcontract.address,
+      });
+
+      if (!tx.status) {
+        setLoading(false);
+        toast.error("Transaction failed");
+        return;
+      }
+
+      toast.success("Thank you for your order 🎉");
+      setLoading(false);
+
+      router.back();
+    } catch (error) {
+      toast("An error occurred while processing your order");
+      setLoading(false);
+    }
+  };
 
   if (isLoading) {
     return <LoadingPage />;
@@ -114,10 +186,20 @@ const CartPage = () => {
       </div>
 
       <Button
-        className="w-full mt-4 bg-green-500 text-white h-11 font-semibold text-sm rounded-sm "
-        onClick={() => alert("Payment")}
+        disabled={loading || isLoading}
+        className={`w-full mt-4 ${
+          loading || isLoading ? "bg-neutral-200" : " bg-green-500"
+        } text-white h-11 font-semibold text-sm rounded-sm  flex items-center justify-center`}
+        onClick={onSubmit}
       >
-        Pay ${item.price.toString()}
+        {
+          // Show loading if the data is loading
+          loading || isLoading ? (
+            <Loader className="animate-spin " size={18} />
+          ) : (
+            <p>Pay ${item.price.toString()}</p>
+          )
+        }
       </Button>
     </div>
   );

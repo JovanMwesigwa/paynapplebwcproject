@@ -6,10 +6,15 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import { Copy, X } from "lucide-react";
+import { Copy, Loader, SendHorizonal, X } from "lucide-react";
 import { useState } from "react";
 import { useAccount } from "wagmi";
 import QRCode from "react-qr-code";
+import Web3 from "web3";
+import { newKitFromWeb3 } from "@celo/contractkit";
+import { CONTRACT_ABI, CONTRACT_ADDRESS } from "@/constants";
+import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function PayTerminal({
   handleEnter,
@@ -19,6 +24,10 @@ export default function PayTerminal({
   amount: number;
 }) {
   let [isOpen, setIsOpen] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+
+  const queryClient = useQueryClient();
 
   const { address } = useAccount();
 
@@ -33,6 +42,53 @@ export default function PayTerminal({
   const handleSubmit = () => {
     handleEnter();
     open();
+  };
+
+  const onSubmit = async () => {
+    setLoading(true);
+    try {
+      // Get the connected provider and signer
+      const web3 = new Web3(window.ethereum);
+      const kit = newKitFromWeb3(web3);
+
+      const cUSDcontract = await kit.contracts.getStableToken();
+      let accounts = await web3.eth.getAccounts();
+
+      // @ts-ignore
+      kit.defaultAccount = accounts[0];
+
+      // Check to see if the transaction was successful
+      const amount_ = kit.web3.utils.toWei(amount.toString());
+
+      const txResponse = await cUSDcontract
+        .transfer(CONTRACT_ADDRESS, amount_)
+        .send({
+          from: kit.defaultAccount,
+          feeCurrency: cUSDcontract.address,
+        });
+
+      // Wait for the transaction to be processed if was successful then proceed to make the order
+      const recipt = await txResponse.waitReceipt();
+
+      // Check to see if the transaction was successful
+
+      // Send the order to the contract
+      if (!recipt.status) {
+        setLoading(false);
+        toast("Transaction failed");
+        return;
+      }
+
+      toast.success("Thanks for your order 🎉");
+      setLoading(false);
+
+      close();
+
+      queryClient.invalidateQueries();
+    } catch (error) {
+      toast("An error occurred while processing your order");
+      setLoading(false);
+    }
   };
 
   return (
@@ -105,12 +161,24 @@ export default function PayTerminal({
                       </div>
                     </div>
 
-                    <div className="mt-4 w-full">
+                    <div className="mt-4 w-full ">
                       <Button
-                        className="inline-flex items-center gap-2 rounded-md bg-green-500 py-2 w-full  justify-center px-4 text-base font-medium text-white shadow-inner shadow-white/10 focus:outline-none hover:bg-gray-600"
+                        disabled={loading}
+                        className="inline-flex mb-3 items-center gap-2 rounded-md bg-green-500 py-2 w-full  justify-center px-4 text-sm font-medium text-white shadow-inner shadow-white/10 focus:outline-none hover:bg-gray-600"
                         onClick={close}
                       >
                         Pay with Valora
+                      </Button>
+                      <Button
+                        disabled={loading}
+                        className="inline-flex items-center gap-2 rounded-md bg-[#015232] py-2 w-full  justify-center px-4 text-sm font-medium text-white shadow-inner shadow-white/10 focus:outline-none hover:bg-gray-600"
+                        onClick={onSubmit}
+                      >
+                        {loading ? (
+                          <Loader size={18} className="mr-3 animate-spin" />
+                        ) : (
+                          <p>Pay with Minipay</p>
+                        )}
                       </Button>
                     </div>
                   </div>

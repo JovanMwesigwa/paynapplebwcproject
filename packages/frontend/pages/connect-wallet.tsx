@@ -9,13 +9,13 @@ import { useAccount } from "wagmi";
 const ConnectWalletPage = () => {
   const { isConnected } = useAccount();
 
-  const { session, status } = useFetchLookUpAddress();
+  const { status } = useFetchLookUpAddress();
 
   const router = useRouter();
 
   useEffect(() => {
     if (isConnected) {
-      router.push("/");
+      router.back();
     }
   }, [isConnected]);
 

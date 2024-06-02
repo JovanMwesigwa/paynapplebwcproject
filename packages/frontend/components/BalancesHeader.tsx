@@ -1,25 +1,87 @@
+import { CONTRACT_ABI, CONTRACT_ADDRESS } from "@/constants";
 import useFetchItems from "@/hooks/query/useFetchItems";
 import { weiToCUSD } from "@/utils";
-import { Calculator, ChevronDown, CircleArrowUp } from "lucide-react";
+import { newKitFromWeb3 } from "@celo/contractkit";
+import { Button } from "@headlessui/react";
+import { useQueryClient } from "@tanstack/react-query";
+import { Calculator, ChevronRight, CircleArrowUp, Loader } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
+import { toast } from "sonner";
+import Web3 from "web3";
 
 const BalancesHeader = () => {
+  const [loading, setLoading] = React.useState(false);
+
+  const queryClient = useQueryClient();
+
   const { data, isLoading, error } = useFetchItems({
     functionName: "getBalance",
   });
 
   const balance = data ? weiToCUSD(Number(data.toString())) : "0.00";
 
+  const onSubmit = async () => {
+    setLoading(true);
+    try {
+      // Get the connected provider and signer
+      const web3 = new Web3(window.ethereum);
+      const kit = newKitFromWeb3(web3);
+
+      const cUSDcontract = await kit.contracts.getStableToken();
+      let accounts = await web3.eth.getAccounts();
+
+      // @ts-ignore
+      kit.defaultAccount = accounts[0];
+
+      // Check to see if the transaction was successful
+
+      const contract = new kit.connection.web3.eth.Contract(
+        // @ts-ignore
+        CONTRACT_ABI,
+        CONTRACT_ADDRESS
+      );
+
+      const tx = await contract.methods.withdraw().send({
+        from: kit.defaultAccount,
+        feeCurrency: cUSDcontract.address,
+      });
+
+      if (!tx.status) {
+        setLoading(false);
+        toast.error("Transaction failed");
+        return;
+      }
+
+      toast.success("Withdraw was successfull 🎉");
+      setLoading(false);
+      queryClient.invalidateQueries();
+    } catch (error) {
+      toast("An error occurred while processing your order");
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex flex-col w-full">
       <div className="flex flex-row w-full items-center justify-between mb-3">
         <h1 className="text-[12px] font-medium">Total sales</h1>
 
-        <div className="flex flex-row items-center bg-neutral-50 border p-1 px-2 rounded-sm">
-          <h1 className="text-[11px] mr-1 font-light">Last 30 Days</h1>
-          <ChevronDown size={18} className="text-gray-800" />
-        </div>
+        <Button
+          onClick={onSubmit}
+          disabled={loading}
+          className={`flex flex-row items-center  bg-purple-500 text-white p-1 px-2 rounded-sm`}
+        >
+          {loading ? (
+            <Loader size={15} className="animate-spin text-white" />
+          ) : (
+            <>
+              <h1 className="text-[11px]  font-light ">Withdraw</h1>
+              <ChevronRight size={18} className="text-white" />
+            </>
+          )}
+        </Button>
       </div>
       <div className="flex mb-3 flex-col">
         <div className="flex flex-row items-center justify-between w-full">
