@@ -58,10 +58,6 @@ const RegisterPage = () => {
     setLoading(true);
     const response = await register((session as any)?.user.name);
 
-    console.log("====================================");
-    console.log("response", response);
-    console.log("====================================");
-
     if (response && !response.success) {
       toast("Registration failed. Attestation already exists.");
       setLoading(false);
@@ -183,6 +179,28 @@ const RegisterPage = () => {
           </Button>
         )}
       </div>
+      <Button
+        onClick={handleRevoke}
+        disabled={loading || isLoading}
+        className="inline-flex w-full justify-center items-center gap-2 rounded-md bg-red-500 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white h-9"
+      >
+        {loading ? (
+          <Loader size={18} className="mr-3 animate-spin" />
+        ) : (
+          <p>Revoke</p>
+        )}
+      </Button>
+      <Button
+        onClick={() => signOut()}
+        disabled={loading || isLoading}
+        className="inline-flex w-full justify-center items-center gap-2 rounded-md bg-red-500 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white h-9"
+      >
+        {loading ? (
+          <Loader size={18} className="mr-3 animate-spin" />
+        ) : (
+          <p>LogOut</p>
+        )}
+      </Button>
     </div>
   );
 };
