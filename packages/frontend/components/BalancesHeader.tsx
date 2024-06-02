@@ -71,22 +71,16 @@ const BalancesHeader = () => {
         <div className="flex flex-row gap-x-3 ">
           <Link
             href="/menu"
-            className={`flex flex-row items-center text-orange-500 border border-orange-500 p-1 px-2 rounded-sm`}
+            className={`flex flex-row items-center text-orange-500 border border-orange-500 p-1 w-20 px-2 rounded-sm`}
             target="_blank"
             rel="noopener noreferrer"
           >
-            {loading ? (
-              <Loader size={15} className="animate-spin text-white" />
-            ) : (
-              <>
-                <h1 className="text-[11px] ">Open menu</h1>
-              </>
-            )}
+            <h1 className="text-[11px] ">Open menu</h1>
           </Link>
           <Button
             onClick={onSubmit}
             disabled={loading}
-            className={`flex flex-row items-center  bg-purple-500 text-white p-1 px-2 rounded-sm`}
+            className={`flex flex-row items-center  bg-purple-500 text-white p-1 px-2 rounded-sm w-20 justify-center`}
           >
             {loading ? (
               <Loader size={15} className="animate-spin text-white" />
@@ -112,9 +106,9 @@ const BalancesHeader = () => {
           {/*  */}
           <Link
             href="/terminal"
-            className="flex flex-row items-center bg-yellow-400 py-1 rounded-sm px-3"
+            className="flex flex-row items-center bg-yellow-400 py-1 rounded-sm px-2 w-20"
           >
-            <Calculator size={13} className="text-gray-800 mr-1" />
+            <Calculator size={14} className="text-gray-800 mr-1" />
             <h1 className="text-[11px] text-gray-800">Terminal</h1>
           </Link>
         </div>
