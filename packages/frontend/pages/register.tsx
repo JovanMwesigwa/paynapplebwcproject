@@ -179,7 +179,7 @@ const RegisterPage = () => {
           </Button>
         )}
       </div>
-      <Button
+      {/* <Button
         onClick={handleRevoke}
         disabled={loading || isLoading}
         className="inline-flex w-full justify-center items-center gap-2 rounded-md bg-red-500 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white h-9"
@@ -200,7 +200,7 @@ const RegisterPage = () => {
         ) : (
           <p>LogOut</p>
         )}
-      </Button>
+      </Button> */}
     </div>
   );
 };
