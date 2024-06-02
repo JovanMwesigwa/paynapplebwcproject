@@ -23,6 +23,7 @@ contract Paynapple {
     uint256 private s_dessertsCount;
     uint256 private s_drinksCount;
     address private i_owner;
+    address private s_shopOwner;
 
     struct MenuItem {
         uint256 id;
@@ -150,6 +151,13 @@ contract Paynapple {
         _;
     }
 
+    modifier onlyShopOwner() {
+        if (msg.sender != s_shopOwner) {
+            revert Paynapple__NotAuthorized();
+        }
+        _;
+    }
+
     function buyItem(uint256 id, uint256 quantity) public payable {
         MenuItem memory item = s_menuItems[id];
 
@@ -173,9 +181,13 @@ contract Paynapple {
         s_sales[SalesType.Menu] = sale;
     }
 
-    function withdraw() public onlyOwner {
+    function withdraw() public onlyShopOwner {
         uint256 balance = stableCoin.balanceOf(address(this));
         stableCoin.transfer(i_owner, balance);
+    }
+
+    function setShopOwner(address shopOwner) public onlyOwner {
+        s_shopOwner = shopOwner;
     }
 
     receive() external payable {
@@ -257,6 +269,10 @@ contract Paynapple {
         sales[2] = s_sales[SalesType.Online];
 
         return sales;
+    }
+
+    function getShopOwner() public view returns (address) {
+        return s_shopOwner;
     }
 
     function getBurgerCount() public view returns (uint256) {

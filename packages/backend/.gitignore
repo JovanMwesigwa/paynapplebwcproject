@@ -13,4 +13,4 @@ docs/
 # Dotenv file
 .env
 
-# Broadcast command -> forge script script/DeployPaynapple.s.sol --rpc-url https://alfajores-forno.celo-testnet.org  --private-key 134bae5ed0a6def7a07c8d8a57de121974d95c2db0515edef156ccf00fd5b260 --constructor-args 0x874069fa1eb16d44d622f2e0ca25eea172369bc1  --broadcast  --etherscan-api-key 58S1RZI5U158MQPC169PAPXK78DUJS4TEI -vvvv
+# Broadcast command -> forge script script/DeployPaynapple.s.sol --rpc-url https://alfajores-forno.celo-testnet.org  --private-key 134bae5ed0a6def7a07c8d8a57de121974d95c2db0515edef156ccf00fd5b260 --broadcast  --etherscan-api-key 58S1RZI5U158MQPC169PAPXK78DUJS4TEI -vvvv
