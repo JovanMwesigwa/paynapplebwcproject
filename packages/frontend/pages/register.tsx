@@ -57,6 +57,11 @@ const RegisterPage = () => {
   const handleRegister = async () => {
     setLoading(true);
     const response = await register((session as any)?.user.name);
+
+    console.log("====================================");
+    console.log("response", response);
+    console.log("====================================");
+
     if (response && !response.success) {
       toast("Registration failed. Attestation already exists.");
       setLoading(false);
